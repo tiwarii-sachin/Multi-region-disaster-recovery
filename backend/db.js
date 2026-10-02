@@ -1,5 +1,5 @@
 import Database from "better-sqlite3";
-const db = new Database("watchmore.db");
+const db = new Database("/app/data/watchmore.db");
 db.pragma("journal_mode = WAL");
 db.exec(`
 CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, name TEXT, email TEXT UNIQUE, password TEXT);

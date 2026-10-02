@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: watchmore-backend-compose
+    ports:
+      - "5001:5000"
+    volumes:
+      - watchmore-data:/app/data
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: watchmore-frontend-compose
+    ports:
+      - "3002:80"
+    depends_on:
+      - backend
+
+volumes:
+  watchmore-data:
