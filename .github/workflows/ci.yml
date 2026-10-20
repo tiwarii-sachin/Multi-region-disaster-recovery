@@ -24,3 +24,33 @@ jobs:
       - name: Build backend and frontend
         run: docker compose build
 
+  push:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build images for push
+        run: docker compose build
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push backend image
+        run: |
+          docker tag watchmore-backend:latest ${{ secrets.DOCKERHUB_USERNAME }}/watchmore-backend:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/watchmore-backend:latest
+
+      - name: Push frontend image
+        run: |
+          docker tag watchmore-frontend:latest ${{ secrets.DOCKERHUB_USERNAME }}/watchmore-frontend:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/watchmore-frontend:latest
