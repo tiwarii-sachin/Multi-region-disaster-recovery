@@ -1,5 +1,6 @@
 services:
   backend:
+    image: watchmore-backend:latest
     build:
       context: ./backend
     container_name: watchmore-backend-compose
@@ -9,6 +10,7 @@ services:
       - watchmore-data:/app/data
 
   frontend:
+    image: watchmore-frontend:latest
     build:
       context: ./frontend
     container_name: watchmore-frontend-compose
